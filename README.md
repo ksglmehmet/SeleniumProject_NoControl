@@ -1,0 +1,2 @@
+# SeleniumProjeNo_Kontrol
+SeleniumProjeNo çalışmasının kontrolünü içermektedir.
