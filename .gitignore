@@ -2,10 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+path.py
 # C extensions
 *.so
-
+SeleniumProjeNo_Kontrol.code-workspace
 # Distribution / packaging
 .Python
 build/
