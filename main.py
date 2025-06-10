@@ -83,7 +83,7 @@ Total_page = int(np.ceil(Total_items / 25))
 
 print(f"\n I00001-2023 Klasöründe Toplam: {Total_items} Adet .tiff Dosyası Var.")
 
-for x in range(2, (Total_page + 1)):
+for x in range(67, (Total_page + 1)):
     print(f"\nToplam {Total_page} Tane Sayfa Var.\n")
     print(f"\n{x}. sayfada yer alan tifflerin bilgileri kontrol ediliyor.\n")
     if x != 1:
