@@ -16,7 +16,7 @@ This project automates the verification of project archives and .tiff files in a
 ### Installation
 1. Install the required Python packages:
     ```
-    pip install -r [requirements.txt]
+    pip install -r requirements.txt
     ```
 2. Update the username, password, and URL information in `path.py` according to your environment.
 3. Make sure Firefox browser is installed.
@@ -25,7 +25,7 @@ This project automates the verification of project archives and .tiff files in a
 1. Navigate to the project folder in the terminal.
 2. Run the following command:
     ```
-    python [main.py]
+    python main.py
     ```
 3. The program will automatically perform archive and project checks and print the results to the console.
 
@@ -49,7 +49,7 @@ Bu proje, Selenium kullanarak bir doküman yönetim sistemindeki proje arşivler
 ### Kurulum
 1. Gerekli Python paketlerini yükleyin:
     ```
-    pip install -r [requirements.txt]
+    pip install -r requirements.txt
     ```
 2. `path.py` dosyasındaki kullanıcı adı, şifre ve URL bilgilerini kendi ortamınıza göre güncelleyin.
 3. Firefox tarayıcısının kurulu olduğundan emin olun.
@@ -58,7 +58,7 @@ Bu proje, Selenium kullanarak bir doküman yönetim sistemindeki proje arşivler
 1. Terminalde proje klasörüne gidin.
 2. Aşağıdaki komutu çalıştırın:
     ```
-    python [main.py]
+    python main.py
     ```
 3. Program, arşiv ve proje kontrollerini otomatik olarak yapacak ve sonuçları ekrana yazacaktır.
 
