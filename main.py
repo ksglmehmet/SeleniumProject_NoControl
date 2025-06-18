@@ -62,15 +62,15 @@ Name_Sirala = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="browseV
 Name_Sirala.click()
 
 time.sleep(1)
-I00001_2023 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rowCell1"]/td[3]/a[1]')))
-I00001_2023.click()
+I00001_2024 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rowCell0"]/td[3]/a[1]')))
+I00001_2024.click()
 
 time.sleep(1)
 Name_Sirala_1 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="browseViewCoreTable"]/tbody/tr[1]/td[3]/a')))
 Name_Sirala_1.click()
 
 ArsivNo = "I00001"
-ArsivGrupNo = "I00001-2023"
+ArsivGrupNo = "I00001-2024"
 ArsivNo_Yanlis = []
 ArsivGrup_Yanlis = []
 ProjeNo_Yanlis = []
@@ -81,9 +81,9 @@ time.sleep(1)
 Total_items = int(driver.find_element(By.XPATH, '/html/body/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr/td/form[3]/div/div/div/table/tbody/tr/td[2]/div/div[2]/table/tbody/tr/td/table/tbody/tr[2]/td[1]').text.split(" ")[-2])
 Total_page = int(np.ceil(Total_items / 25))
 
-print(f"\n I00001-2023 Klasöründe Toplam: {Total_items} Adet .tiff Dosyası Var.")
+print(f"\n {ArsivGrupNo} Klasöründe Toplam: {Total_items} Adet .tiff Dosyası Var.")
 
-for x in range(67, (Total_page + 1)):
+for x in range(1, (Total_page + 1)):
     print(f"\nToplam {Total_page} Tane Sayfa Var.\n")
     print(f"\n{x}. sayfada yer alan tifflerin bilgileri kontrol ediliyor.\n")
     if x != 1:
@@ -184,11 +184,113 @@ for x in range(67, (Total_page + 1)):
             # Ana-Sayfaya Dönüş
             #################################### 
             try:
-                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80455978_0"]')))
+                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80465872_0"]')))
                 AnaSayfa.click()
                 time.sleep(2)
             except Exception as e:
                 raise Exception(f"{get_tiff} No'lu Projeden Sonra Ana-Sayfaya Dönüşte Hata Oluştu. Hata: {e}")
+    else:
+        time.sleep(2)
+        page_count = []
+        page_info = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="browseViewCoreTable"]'))).text.split("\n")
+        for y in page_info:
+            if y.strip().endswith(".tiff"):
+                page = y.strip().replace(".tiff", "")
+                page_count.append(page)
+        for i in range(0, len(page_count)):
+            print(f"\n {x}. Sayfanın, {i+1}. Projesi İşleme Alınıyor. (Proje Nosu: {page_count[i]})")
+            time.sleep(0.5) # Minik bekleme
+            try:
+                Ilgili_Tiff = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'#rowCell{i} > td.browseItemName > a:nth-child(2)')))  
+                Ilgili_Tiff.click()
+                Properties = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="menuItem_Properties"]')))
+                Properties.click()
+            except Exception as e:
+                raise Exception(f"Proje No'nun Özelliklerine Gidilemedi !!! Hata: {str(e)}")
+
+            time.sleep(1) # Bazen, tiff adını alamıyor. Eski isimde kalıyor.
+            try:
+                get_tiff = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/table/tbody/tr[2]/td/table/tbody/tr[1]/td/div/div[6]/div[2]'))).text.split(".")[0]
+            except Exception as e:
+                raise Exception(f"Proje Numarası Kopyalanamadı !!! Hata: {e}")
+
+
+            #time.sleep(1)
+            try:
+                Categories = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="LLInnerContainer"]/tbody/tr[2]/td/table/tbody/tr[1]/td/form/table/tbody/tr[1]/td/ul/div[2]/li[5]')))
+                Categories.click()
+                time.sleep(0.2)
+                print(f"{get_tiff} No'lu Projenin 'Arşiv Bilgisi' Ekranındayız.")
+            except Exception as e:
+                raise Exception(f"{get_tiff} No'lu Projenin Kategori Ekranına Geçilemedi !!! Hata: {e}")
+
+            ####################################
+            # Arşiv Bilgisi Kontrol
+            #################################### 
+            try:
+                time.sleep(0.2)
+                a = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_2_1'))).get_attribute("value")
+                if a == ArsivNo:
+                    print(f"{get_tiff} No'lu Projenin Arşiv Numarası: {a} ve Doğru.")
+                else:
+                    print(f"{get_tiff} No'lu Projenin Arşiv Numarası: {a} ve Yanlış !")
+                    print(f"{get_tiff} No'lu Proje 'Yanlış' Olarak Kaydediliyor !!!")
+                    ArsivNo_Yanlis.append(get_tiff)
+            except Exception as e:
+                raise Exception(f"{get_tiff} No'lu Projenin 'Arşiv Numarası' Alınırken Hata Oluştu. Hata: {e}")
+
+            try:
+                time.sleep(0.2)
+                b = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_3_1'))).get_attribute("value")
+                if b == ArsivGrupNo:
+                    print(f"{get_tiff} No'lu Projenin Arşiv Grup Bilgisi: {b} ve Doğru.\n")
+                else:
+                    print(f"{get_tiff} No'lu Projenin Arşiv Grup Bilgisi: {b} ve Yanlış !")
+                    print(f"{get_tiff} No'lu Proje 'Yanlış Arşiv Grup' Olarak Kaydediliyor !!!")
+                    ArsivGrup_Yanlis.append(get_tiff)
+            except Exception as e:
+                raise Exception(f"{get_tiff} No'lu Projenin 'Arşiv Grup' Alınırken Hata Oluştu. Hata: {e}")
+
+            ####################################
+            # Proje Doküman Bilgisi
+            #################################### 
+            try:
+                ProjeDokuman = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr/td/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[3]/a')))
+                ProjeDokuman.click()
+                time.sleep(2)
+                print(f"{get_tiff} No'lu Projenin 'Proje Doküman Bilgisi' Ekranındayız.")
+                c = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_2_1'))).get_attribute("value")
+                d = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_3_1'))).get_attribute("value")
+                if c == get_tiff and d == get_tiff:
+                    print(f"{get_tiff} No'lu Projenin Eski ve Yeni Proje Numarası: {c} ve Doğru.")
+                else:
+                    print(f"{get_tiff} No'lu Projenin Eski ve Yeni Proje Numarası: {c} ve Yanlış !!!")
+                    print(f"{get_tiff} No'lu Proje 'Yanlış' Olarak Kaydediliyor !!!")
+                    ProjeNo_Yanlis.append(get_tiff)
+                time.sleep(0.2)
+                e = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_4_1'))).get_attribute("value")
+                f = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_5_1'))).get_attribute("value")
+                g = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#_1_1_6_1'))).get_attribute("value")
+                if e == ArsivNo and f == 'Proje' and g == 'Güncel':
+                    print(f"{get_tiff} No'lu Projenin Balya Numarası - Proje Tipi ve Durumu Doğru.\n")
+                    print("-" * 50)
+                else:
+                    print(f"{get_tiff} No'lu Projenin Balya Numarası - Proje Tipi ve Durumu Yanlış !!!")
+                    print(f"{get_tiff} No'lu Proje 'Yanlış' Olarak Kaydediliyor !!!")
+                    Proje_Balya_Tipi_Durumu.append(get_tiff)
+            except Exception as e:
+                raise Exception(f"{get_tiff} No'lu Projenin 'Proje Doküman Bilgisi' Alınırken Hata Oluştu. Hata: {e}")
+
+            ####################################
+            # Ana-Sayfaya Dönüş
+            #################################### 
+            try:
+                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80465872_0"]')))
+                AnaSayfa.click()
+                time.sleep(2)
+            except Exception as e:
+                raise Exception(f"{get_tiff} No'lu Projeden Sonra Ana-Sayfaya Dönüşte Hata Oluştu. Hata: {e}")
+
 
 print(f"\nİşlem Tamamlandı!\n")
 print(f"Yanlış Arşiv Numara Bilgisine Sahip olan Proje Sayısı: {len(ArsivNo_Yanlis)}")
