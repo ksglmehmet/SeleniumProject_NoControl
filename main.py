@@ -18,17 +18,20 @@ import numpy as np
 from selenium.common.exceptions import ElementClickInterceptedException
 
 # path = ph.path_driver2
-options = webdriver.FirefoxOptions()
+firefox_options = Options()
 # options.add_experimental_option("detach", True)
-options.add_argument('--disable-notifications')
-options.add_argument("--disable-infobars")
-options.add_argument("start-maximized")
-options.add_argument("--disable-extensions")
-options.add_argument("--disable-gpu")
-options.add_argument("--no-sandbox")
-options.add_argument("--ignore-certificate-errors")
+firefox_options.add_argument('--disable-notifications')
+firefox_options.add_argument("--disable-infobars")
+firefox_options.add_argument("start-maximized")
+firefox_options.add_argument("--disable-extensions")
+firefox_options.add_argument("--disable-gpu")
+firefox_options.add_argument("--no-sandbox")
+firefox_options.add_argument("--ignore-certificate-errors")
 
-driver = webdriver.Firefox(service = FirefoxService(GeckoDriverManager().install()))
+firefox_options.binary_location = ph.location
+service = FirefoxService(executable_path = ph.gecko)
+driver = webdriver.Firefox(service = service, options = firefox_options)
+# driver = webdriver.Firefox(service = FirefoxService(GeckoDriverManager().install()))
 driver.maximize_window()
 
 driver.get(ph.url_proje_firefox)
@@ -62,15 +65,15 @@ Name_Sirala = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="browseV
 Name_Sirala.click()
 
 time.sleep(1)
-I00001_2024 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rowCell0"]/td[3]/a[1]')))
-I00001_2024.click()
+I00001_2014 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rowCell10"]/td[3]/a[1]')))
+I00001_2014.click()
 
 time.sleep(1)
 Name_Sirala_1 = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="browseViewCoreTable"]/tbody/tr[1]/td[3]/a')))
 Name_Sirala_1.click()
 
 ArsivNo = "I00001"
-ArsivGrupNo = "I00001-2024"
+ArsivGrupNo = "I00001-2014"
 ArsivNo_Yanlis = []
 ArsivGrup_Yanlis = []
 ProjeNo_Yanlis = []
@@ -83,7 +86,7 @@ Total_page = int(np.ceil(Total_items / 25))
 
 print(f"\n {ArsivGrupNo} Klasöründe Toplam: {Total_items} Adet .tiff Dosyası Var.")
 
-for x in range(1, (Total_page + 1)):
+for x in range(2, (Total_page + 1)):
     print(f"\nToplam {Total_page} Tane Sayfa Var.\n")
     print(f"\n{x}. sayfada yer alan tifflerin bilgileri kontrol ediliyor.\n")
     if x != 1:
@@ -184,7 +187,7 @@ for x in range(1, (Total_page + 1)):
             # Ana-Sayfaya Dönüş
             #################################### 
             try:
-                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80465872_0"]')))
+                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80455978_0"]')))
                 AnaSayfa.click()
                 time.sleep(2)
             except Exception as e:
@@ -285,7 +288,7 @@ for x in range(1, (Total_page + 1)):
             # Ana-Sayfaya Dönüş
             #################################### 
             try:
-                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80465872_0"]')))
+                AnaSayfa = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="80455978_0"]')))
                 AnaSayfa.click()
                 time.sleep(2)
             except Exception as e:
